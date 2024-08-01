@@ -1,41 +1,25 @@
 <?php
 
 
-#imp function
-function loadEnv($path) {
-    if (!file_exists($path)) {
-        throw new Exception('Environment file not found: ' . $path);
-    }
+$servername = "localhost";
+$username = "dev_diaries";
+$password = "dev_diaries";
+$dbname = "authentication";
 
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    
-    foreach($lines as $line){
-        if(strpos(trim($line), '#') === 0){
-            continue;
-        }
-
-        list($name, $value) = explode('=', $line, 2);
-        $_ENV[$name] = trim($value);
-    }
+if (!function_exists('mysqli_init') && !extension_loaded('mysqli')) {
+    echo 'We don\'t have mysqli!!!';
+} else {
+    echo 'Phew we have it!';
 }
 
 
-loadEnv(__DIR__ . '/config.env');
 
-$config = array(
-    'db_hostname' => $_ENV['db_hostname'],
-    'db_name' => $_ENV['db_name'],
-    'db_username' => $_ENV['db_username'],
-    'db_passwd' => $_ENV['db_passwd']
-);
+$mysql = new mysqli($servername, $username, $password, $dbname);
 
-try{
-    $connection = new PDO("pgsql:host=" . $config['db_hostname'] . ";dbname=" . $config['db_name'], $config['db_username'], $config['db_passwd']);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-}catch(PDOExeption $e){
-    die("connection failed, ye raha reason: " . $e);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+echo "Connected successfully";
 
 
 ?>
