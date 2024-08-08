@@ -4,9 +4,8 @@ require_once '../config/req_config';
 // require_once '../config/req_config.php';
 require_once '../config/dbconfig.php';
 
-
 #saving sata to db
-function saveRequest($ip_address, $username, $password, $email) 
+function saveRequest($ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink) 
 {
     global $connection;
     $query = $connection->prepare("INSERT INTO requests (ip_address, username, password, email)
@@ -15,6 +14,12 @@ function saveRequest($ip_address, $username, $password, $email)
     $query->bindParam(':username', $username, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
     $query->bindParam(':email', $email, PDO::PARAM_STR);
+    $query->bindParam(':contactNumber', $contactNumber, PDO::PARAM_STR);
+    $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+    $query->bindParam(':interestCat', $interestCat, PDO::PARAM_STR);
+    $query->bindParam(':fullName', $fullName, PDO::PARAM_STR);
+    $query->bindParam(':aboutMe', $aboutMe, PDO::PARAM_STR);
+    $query->bindParam(':webLink', $webLink, PDO::PARAM_STR);
     $query->execute();
 }
 
@@ -94,7 +99,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         $username = isset($data['username']) ? $data['username'] : '';
         $password = isset($data['password']) ? $data['password'] : '';
         $email = isset($data['email']) ? $data['email'] : '';
-        $displayName = isset($data['displayName']) ? $data['displayName'] : '';
         $contactNumber = isset($data['contactNumber']) ? $data['contactNumber'] : '';
         $dob = isset($data['dob']) ? $data['dob'] : '';
         $interestCat = isset($data['InterestCat']) ? $data['interestCat'] : '';
@@ -104,13 +108,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
 
         // ALL FIELDS: username, password, email, displayName, contactNumber, dob, interestCat, fullName, aboutMe, webLink
-
-        if(!validateInput($username) || !validateInput($password) || !validateInput($email)) 
-        {
-            echo createResponse('error', 'You have entered incorrect information.');
-            exit;
-        }
-
         if(empty($username) OR empty($email) OR empty($password))
         {
             echo createResponse('error', 'All fields are mandatory on the form.');
@@ -132,7 +129,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
             'email' => $encrypted_email
         ]);
    
-        saveRequest($_SERVER['REMOTE_ADDR'], $username, $encrypted_password, $encrypted_email);
+        saveRequest($_SERVER['REMOTE_ADDR'], $username, $encrypted_password, $encrypted_email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink);
     } 
     else 
     {
