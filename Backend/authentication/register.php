@@ -94,6 +94,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         $username = isset($data['username']) ? $data['username'] : '';
         $password = isset($data['password']) ? $data['password'] : '';
         $email = isset($data['email']) ? $data['email'] : '';
+        $displayName = isset($data['displayName']) ? $data['displayName'] : '';
+        $contactNumber = isset($data['contactNumber']) ? $data['contactNumber'] : '';
+        $dob = isset($data['dob']) ? $data['dob'] : '';
+        $interestCat = isset($data['InterestCat']) ? $data['interestCat'] : '';
+        $fullName = isset($data['fullName']) ? $data['fullName'] : '';
+        $aboutMe = isset($data['aboutMe']) ? $data['aboutMer'] : '';
+        $webLink = isset($data['webLink']) ? $data['webLink'] : '';
+
+
+        // ALL FIELDS: username, password, email, displayName, contactNumber, dob, interestCat, fullName, aboutMe, webLink
 
         if(!validateInput($username) || !validateInput($password) || !validateInput($email)) 
         {
