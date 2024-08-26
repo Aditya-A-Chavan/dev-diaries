@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/req_config';
+require_once '../config/req_config.php';
 // require_once '../config/req_config.php';
 require_once '../config/dbconfig.php';
 
