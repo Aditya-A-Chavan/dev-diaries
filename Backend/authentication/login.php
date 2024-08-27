@@ -1,10 +1,13 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../config/req_config.php';
 require_once '../config/dbconfig.php';
 
 
-function createResponse($status, $mesage, $data = []){
+function createResponse($status, $message, $data = []){
 
     $response = [
         'status' => $status,
@@ -68,69 +71,75 @@ function XORencrypt($input){
 }
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    #checks request limit
-    if(!CheckRequestLimit($_SERVER['REMOTE_ADDR'])){
-        echo createResponse('error', 'TOo many requests! pulling a DDoS on us?', []);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Uncomment these lines when you're ready to implement rate limiting
+    /*
+    if (!CheckRequestLimit($_SERVER['REMOTE_ADDR'])) {
+        echo createResponse('error', 'Too many requests. Please try again later.', []);
         exit;
     }
 
-    #checks for similar req from same ip
-    if(!CheckRequestTime($_SERVER['REMOTE_ADDR'])){
-        echo createResponse('Error', 'common requests seen coming from you IP already. you can use a single instance', []);
+    if (!CheckRequestTime($_SERVER['REMOTE_ADDR'])) {
+        echo createResponse('error', 'Request frequency limit exceeded. Please wait before trying again.', []);
+        exit;
+    }
+    */
+
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (!$data || !isset($data['email']) || !isset($data['password']) || empty($data['email']) || empty($data['password'])) {
+        echo createResponse('error', 'Missing or invalid email/password', []);
         exit;
     }
 
+    $email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+    $password = $data['password'];
 
-    $data = json_decode(file_git_contents('php://input'), true);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo createResponse('error', 'Invalid email format', []);
+        exit;
+    }
+
+    $email_hash = base64_encode($email);
+
+    $sql = "SELECT * FROM requests WHERE email = ?";
+    $stmt = $connection->prepare($sql);
     
-
-    #final data checks: if data exists, if correct data, if wrong creds. everything
-    if($data){
-
-        $email = isset($data['email']) ? $data['email'] : '';
-        $password = isset($data['password']) ? $data['password'] : '';
-        
-        
-        if(!$data || empty($data['email']) || empty($data['password'])){
-            echo createResponse('error', 'Missing email / password', []);
-            exit;
-        }
-
-
-        $email_hash = base64_encode($data['EMAIL']);
-        $password = $data['password'];
-
-
-        #fetching creds stored in db
-        $sql = "SELECT * FROM requests WHERE email = '$email_hash'";
-        $query = $connection->prepare($sql);
-        $query->execute();
-        $row = $query->fetch(PDO::FETCH_ASSOC);
-
-        $password_hash = $row['password'];
-
-        if(password_verify($password, $password_hash)){
-            session_start();
-            $_SESSION['username'] = $row['username'];
-            $username = $_SESSION['username'];
-
-            echo createResponse('sucess', 'Logged in' , ['username' => $_SESSION['username']]);
-
-        }
-        else{
-            echo createResponse('error', 'incorrect credentials', []);
-            exit;
-        }
-    }
-
-    #some internal server error maybe.
-    else{
-        echo createResponse('error', 'seems to be a wrong request', []);
+    if (!$stmt) {
+        error_log("Prepare failed: " . $connection->error);
+        echo createResponse('error', 'An internal error occurred', []);
         exit;
     }
+
+    $stmt->bind_param("s", $email_hash);
+    
+    if (!$stmt->execute()) {
+        error_log("Execute failed: " . $stmt->error);
+        echo createResponse('error', 'An internal error occurred', []);
+        exit;
+    }
+
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        if (password_verify($password, $user['password'])) {
+            session_start();
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+
+            echo createResponse('success', 'Logged in successfully', ['username' => $user['username']]);
+        } else {
+            echo createResponse('error', 'Incorrect email or password', []);
+        }
+    } else {
+        echo createResponse('error', 'Incorrect email or password', []);
+    }
+
+    $stmt->close();
+} else {
+    echo createResponse('error', 'Invalid request method', []);
 }
-
-
 
 ?>

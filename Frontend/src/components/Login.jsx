@@ -61,6 +61,7 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "5%",
+        color: "#f0f0f0",  // light text color
       }}
     >
       <Container maxWidth="sm">
@@ -69,11 +70,19 @@ function Login() {
             style={{ marginBottom: "20px" }}
             variant="h2"
             component="h2"
+            sx={{ color: "#ffffff" }}  // title color
           >
             Sign in
           </Typography>
           {error && (
-            <Alert style={{ marginBottom: "20px" }} severity="error">
+            <Alert
+              style={{ marginBottom: "20px" }}
+              severity="error"
+              sx={{
+                backgroundColor: "#333",  // dark background for alert
+                color: "#fff",             // light text for alert
+              }}
+            >
               {error}
             </Alert>
           )}
@@ -86,6 +95,13 @@ function Login() {
             label="Email address"
             fullWidth
             style={{ marginBottom: "20px" }}
+            sx={{
+              backgroundColor: "#333",  // input background
+              input: { color: "#fff" }   // input text color
+            }}
+            InputLabelProps={{
+              style: { color: '#fff' },  // label text color
+            }}
           />
           <TextField
             type={showPassword ? "text" : "password"}
@@ -96,20 +112,49 @@ function Login() {
             label="Password"
             fullWidth
             style={{ marginBottom: "20px" }}
+            sx={{
+              backgroundColor: "#333",
+              input: { color: "#fff" }
+            }}
+            InputLabelProps={{
+              style: { color: '#fff' },
+            }}
             InputProps={{
               endAdornment: (
-                <IconButton onClick={handleShowPassword}>
+                <IconButton onClick={handleShowPassword} sx={{ color: "#fff" }}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               ),
             }}
           />
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            sx={{
+              backgroundColor: "#007bff",
+              "&:hover": {
+                backgroundColor: "#0056b3",
+              },
+              color: "#fff",  // button text color
+              marginTop: "10px", // margin for better spacing
+            }}
+          >
             Login
           </Button>
-          <p>
-            Don't have an account? <Link href="/register">Sign up</Link>
-          </p>
+          <Typography
+            variant="body1"
+            align="center"
+            style={{ marginTop: "20px", color: "#fff" }}
+          >
+            Don't have an account?{" "}
+            <Link
+              href="/register"
+              sx={{ color: "#007bff", textDecoration: "none" }}
+            >
+              Sign up
+            </Link>
+          </Typography>
         </form>
       </Container>
     </Box>
@@ -117,4 +162,3 @@ function Login() {
 }
 
 export default Login;
-

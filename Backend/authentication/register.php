@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../config/req_config.php';
 // require_once '../config/req_config.php';
 require_once '../config/dbconfig.php';
@@ -8,18 +11,8 @@ require_once '../config/dbconfig.php';
 function saveRequest($ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink) 
 {
     global $connection;
-    $query = $connection->prepare("INSERT INTO requests (ip_address, username, password, email)
-    VALUES (:ip_address, :username, :password, :email)");
-    $query->bindParam(':ip_address', $ip_address, PDO::PARAM_STR);
-    $query->bindParam(':username', $username, PDO::PARAM_STR);
-    $query->bindParam(':password', $password, PDO::PARAM_STR);
-    $query->bindParam(':email', $email, PDO::PARAM_STR);
-    $query->bindParam(':contactNumber', $contactNumber, PDO::PARAM_STR);
-    $query->bindParam(':dob', $dob, PDO::PARAM_STR);
-    $query->bindParam(':interestCat', $interestCat, PDO::PARAM_STR);
-    $query->bindParam(':fullName', $fullName, PDO::PARAM_STR);
-    $query->bindParam(':aboutMe', $aboutMe, PDO::PARAM_STR);
-    $query->bindParam(':webLink', $webLink, PDO::PARAM_STR);
+    $query = $connection->prepare("INSERT INTO requests (ip_address, username, password, email, contactNumber, dob, interestCat, fullName, aboutMe, webLink) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $query->bind_param('ssssssssss', $ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink);
     $query->execute();
 }
 
@@ -78,18 +71,21 @@ function XORencrypt($input){
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') 
 {
+/*
+  !  UNCOMMMENT ONLY IF PREPARED STATEMENTS ARE WORKING
 
-    if(!checkRequestLimit($_SERVER['REMOTE_ADDR'])) 
-    {
-        echo createResponse('error', 'Too many requests! Try again later.', []);
-        exit;
-    }
-
-    if(!checkRequestTime($_SERVER['REMOTE_ADDR'])) 
-    {
-        echo createResponse('error', 'Request too common! Try again later.', []);
-        exit;
-    }
+    ? if(!checkRequestLimit($_SERVER['REMOTE_ADDR'])) 
+    ? {
+    ?     echo createResponse('error', 'Too many requests! Try again later.', []);
+    ?     exit;
+    ? }
+? 
+    ? if(!checkRequestTime($_SERVER['REMOTE_ADDR'])) 
+    ? {
+    ?     echo createResponse('error', 'Request too common! Try again later.', []);
+    ?     exit;
+    ?  }
+    */
 
     //Check and process entered data
     $data = json_decode(file_get_contents('php://input'), true);
@@ -103,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         $dob = isset($data['dob']) ? $data['dob'] : '';
         $interestCat = isset($data['InterestCat']) ? $data['interestCat'] : '';
         $fullName = isset($data['fullName']) ? $data['fullName'] : '';
-        $aboutMe = isset($data['aboutMe']) ? $data['aboutMer'] : '';
+        $aboutMe = isset($data['aboutMe']) ? $data['aboutMe'] : '';
         $webLink = isset($data['webLink']) ? $data['webLink'] : '';
 
 
