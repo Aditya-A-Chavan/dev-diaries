@@ -11,8 +11,8 @@ require_once '../config/dbconfig.php';
 function saveRequest($ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink) 
 {
     global $connection;
-    $query = $connection->prepare("INSERT INTO requests (ip_address, username, password, email, contactNumber, dob, interestCat, fullName, aboutMe, webLink) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $query->bind_param('ssssssssss', $ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink);
+    $query = $connection->prepare("INSERT INTO requests (ip_address, username, password, email, contactNumber, dob, interestCat, fullName, aboutMe, webLink, prev_pass1, prev_pass2, prev_pass3) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $query->bind_param('sssssssssssss', $ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink, $password, $password, $password);
     $query->execute();
 }
 
