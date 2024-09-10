@@ -8,6 +8,7 @@ import Logout from './components/Logout';
 import Dashboard from './components/Dashboard';
 import ForgetPassword from './components/Forget';
 import VerifyOTP from './components/Verify';
+import ResetPassword from './components/Reset';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/forget-password" element={<ForgetPassword />} />
             <Route path="/verify" element={<VerifyOTP />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </BrowserRouter>
       <Footer />

@@ -7,30 +7,31 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ForgetPassword() {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [apiResponse, setApiResponse] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
     const formatPhoneNumber = (phone) => {
-        // Ensure the phone number starts with +91
+       
         if (!phone.startsWith("+91")) {
             return "+91" + phone;
         }
         return phone;
     };
 
-    console.log(formatPhoneNumber(phoneNumber));
+    // console.log(formatPhoneNumber(phoneNumber));
 
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Submit button clicked for password reset');
 
         const data = {
-            // email,
+            email,
             phonenumber: formatPhoneNumber(phoneNumber),
         };
         console.log('Data being sent:', data);
@@ -42,7 +43,7 @@ function ForgetPassword() {
                 console.log('Response received:', response);
                 setApiResponse(response.data.message);
 
-                navigate("/verify");
+                navigate("/verify", { state: email });
             })
             .catch((error) => {
                 console.error('Error occurred:', error);
