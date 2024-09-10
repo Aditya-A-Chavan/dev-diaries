@@ -1,30 +1,25 @@
-<!-- forget password form -->
 
 <?php
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-require_once '../config/req_config.php';
-require_once '../config/dbconfig.php';
-
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $data = json_decode(file_get_contents("php://input"), true);
 
+    $otp = filter_var($data['otp']);
     $phonenumber = filter_var($data['phonenumber']);
 
-    if($phonenumber){
-        $response = send_otp($phonenumber);
+    if($otp){
+        $response = verify_otp($phonenumber, $otp);
         echo $response;
     }
 }
 
-function send_otp($phonenumber){
-    $url = "https://united-virgie-harshal-67d93943.koyeb.app/authentication/send_otp";
+
+function verify_otp($phonenumber, $otp){
+    $url = "https://united-virgie-harshal-67d93943.koyeb.app/authentication/verify_otp";
 
     $payload = [
-        'phonenumber' => $phonenumber
+        'phonenumber' => $phonenumber,
+        'otp' => $otp
     ];
 
     $ch = curl_init($url);
@@ -44,7 +39,6 @@ function send_otp($phonenumber){
 
     return $response;
 }
-
 
 
 ?>
