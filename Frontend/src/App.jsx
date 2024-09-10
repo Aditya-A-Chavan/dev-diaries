@@ -6,6 +6,8 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Dashboard from './components/Dashboard';
+import ForgetPassword from './components/Forget';
+import VerifyOTP from './components/Verify';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route path="/verify" element={<VerifyOTP />} />
           </Routes>
         </BrowserRouter>
       <Footer />
