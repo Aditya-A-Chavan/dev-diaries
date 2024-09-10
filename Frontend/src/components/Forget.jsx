@@ -31,7 +31,7 @@ function ForgetPassword() {
         console.log('Submit button clicked for password reset');
 
         const data = {
-            email,
+            email: email,
             phonenumber: formatPhoneNumber(phoneNumber),
         };
         console.log('Data being sent:', data);
@@ -43,7 +43,7 @@ function ForgetPassword() {
                 console.log('Response received:', response);
                 setApiResponse(response.data.message);
 
-                navigate("/verify", { state: email });
+                navigate("/verify", { state: {email: email} });
             })
             .catch((error) => {
                 console.error('Error occurred:', error);

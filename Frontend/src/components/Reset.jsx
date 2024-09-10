@@ -35,8 +35,8 @@ function ResetPassword() {
         }
 
         const data = {
-            email,
-            password,
+            email: email,
+            newPass: password,
         };
         console.log('Data being sent:', data);
 

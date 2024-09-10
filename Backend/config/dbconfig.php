@@ -2,8 +2,8 @@
 
 
 $servername = "localhost";
-$username = "dev_diaries";
-$password = "dev_diaries";
+$username = "root";
+$password = "";
 $dbname = "authentication";
 
 

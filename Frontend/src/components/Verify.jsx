@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom"; 
 
 function VerifyOTP() {
     const [otp, setOtp] = useState("");
@@ -21,8 +21,8 @@ function VerifyOTP() {
         console.log('Submit button clicked for OTP verification');
 
         const data = {
-            otp,
-            email,
+            otp: otp,
+            email: email,
         };
         console.log('Data being sent:', data);
 
@@ -34,7 +34,7 @@ function VerifyOTP() {
                 setApiResponse(response.data.message);
 
                 if (response.status === 200) {
-                    navigate('/reset-password', { state: email }); 
+                    navigate('/reset-password', { state: {email: email} }); 
                 }
             })
             .catch((error) => {
