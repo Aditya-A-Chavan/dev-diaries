@@ -155,6 +155,18 @@ function Login() {
               Sign up
             </Link>
           </Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            style={{ marginTop: "10px", color: "#fff" }}
+          >
+            <Link
+              href="/forgot-password"
+              sx={{ color: "#007bff", textDecoration: "none" }}
+            >
+            Forgot Password?
+            </Link>
+          </Typography>
         </form>
       </Container>
     </Box>
