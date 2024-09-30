@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 function verify_otp($phonenumber, $otp){
-    $url = "https://united-virgie-harshal-67d93943.koyeb.app/authentication/verify_otp";
+    $url = "http://13.48.25.155:9186/authentication/verify_otp";
 
     $payload = [
         'phonenumber' => $phonenumber,
