@@ -72,6 +72,8 @@ function ResetPassword() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                width: "100vw",
+                height: "68vh",
                 marginTop: "5%",
                 color: "#f0f0f0",  // light text color
             }}

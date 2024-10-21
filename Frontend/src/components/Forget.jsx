@@ -67,6 +67,8 @@ function ForgetPassword() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                height: "68vh",
+                width: "100vw",
                 marginTop: "5%",
                 color: "#f0f0f0",  // light text color
             }}

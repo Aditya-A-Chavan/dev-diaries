@@ -21,9 +21,11 @@ function Dashboard() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "80vh",
+        width: "100vw",
+        // height: ""
+        minHeight: "78vh",
         backgroundColor: "#1c1c1c",
-        padding: "2rem",
+        // padding: "2rem",
       }}
     >
       <Paper

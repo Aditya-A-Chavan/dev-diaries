@@ -20,7 +20,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route path="/forgot-password" element={<ForgetPassword />} />
             <Route path="/verify" element={<VerifyOTP />} />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
