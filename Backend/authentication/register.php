@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 require_once '../config/req_config.php';
 // require_once '../config/req_config.php';
 require_once '../config/dbconfig.php';
+require_once '../routes/emailemail.php';
 
 #saving sata to db
 function saveRequest($ip_address, $username, $password, $email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink) 
@@ -118,19 +119,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         ]);
         $encrypted_email = xorEncrypt($email, 'secret_key');
 
-        echo createResponse('success', 'Account registered successfully.', 
-        [
-            'username' => $username,
-            'password' => $encrypted_password,
-            'email' => $encrypted_email
-        ]);
-   
         saveRequest($_SERVER['REMOTE_ADDR'], $username, $encrypted_password, $encrypted_email, $contactNumber, $dob, $interestCat, $fullName, $aboutMe, $webLink);
-    } 
-    else 
-    {
-        echo createResponse('error', 'Wrong request.', []);
+
+        $subject = "Welcome to DevDiaries!";
+        $body = "<h1>Hello, $username!</h1><p>Welcome to DevDiaries. We're excited to have you with us!</p>";
+
+        sendAutomatedEmail($email, $username, $subject, $body);  // Send the email
+
+        echo createResponse('success', 'Account registered successfully.');
+    } else {
+        echo createResponse('error', 'Invalid request.');
         exit;
     }
 }
+?>
 

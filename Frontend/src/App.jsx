@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import ForgetPassword from './components/Forget';
 import VerifyOTP from './components/Verify';
 import ResetPassword from './components/Reset';
+import CreateBlog from './components/CreateBlog';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgetPassword />} />
             <Route path="/verify" element={<VerifyOTP />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/create-blog" element={<CreateBlog />} />
           </Routes>
         </BrowserRouter>
       <Footer />
