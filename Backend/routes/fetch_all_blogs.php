@@ -26,6 +26,7 @@ function fetchAllBlogs() {
             $blogs[] = $row;
         }
     }
+    // echo($blogs);
     return $blogs;
 }
 

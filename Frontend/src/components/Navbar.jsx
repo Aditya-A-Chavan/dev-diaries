@@ -6,12 +6,11 @@ import { Link, useNavigate } from 'react-router-dom';
 function Navbar() {
     const navigate = useNavigate();
 
-    // Check if user data exists in session storage
-    const isLoggedIn = !!sessionStorage.getItem('userData'); // Returns true if userData is present
+    const isLoggedIn = !!sessionStorage.getItem('userData'); 
 
     const handleLogout = () => {
-        sessionStorage.removeItem('userData'); // Clear user session
-        navigate('/login'); // Redirect to login page
+        sessionStorage.removeItem('userData'); 
+        navigate('/login'); 
     };
 
     return (

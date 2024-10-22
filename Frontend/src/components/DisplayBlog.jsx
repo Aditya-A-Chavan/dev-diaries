@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Box, Container, Typography, CircularProgress, Alert } from "@mui/material";
 
 function BlogDisplay() {
-    const { id } = useParams();
+    const { id } = useParams(); // Get the dynamic blog_id from the URL
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -12,14 +12,14 @@ function BlogDisplay() {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await axios.get(`http://localhost/dev-diaries/Backend/routes/fetch_blog.php?id=1`);
+                const response = await axios.get(`http://localhost/dev-diaries/Backend/routes/fetch_blog.php?id=${id}`);
                 if (response.data.status === 'success') {
                     setBlog(response.data.data);
                 } else {
                     setError(response.data.message || "Failed to load the blog.");
                 }
-            } catch (error) {
-                console.error("Error fetching blog:", error);
+            } catch (err) {
+                console.error("Error fetching blog:", err);
                 setError("Failed to load the blog.");
             } finally {
                 setLoading(false);
@@ -36,6 +36,7 @@ function BlogDisplay() {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    width: "100vw",
                     height: "100vh",
                 }}
             >
@@ -53,25 +54,13 @@ function BlogDisplay() {
     }
 
     return (
-        <Container maxWidth="sm" sx={{ marginTop: "5%", color: "#fff" }}>
-            {blog.blog_title ? (
-                <Typography variant="h2" sx={{ marginBottom: "20px" }}>
-                    {blog.blog_title}
-                </Typography>
-            ) : (
-                <Typography variant="h2" sx={{ marginBottom: "20px", color: "gray" }}>
-                    Untitled Blog
-                </Typography>
-            )}
-            {blog.blog_content ? (
-                <Typography variant="body1" sx={{ marginBottom: "20px" }}>
-                    {blog.blog_content}
-                </Typography>
-            ) : (
-                <Typography variant="body1" sx={{ marginBottom: "20px", color: "gray" }}>
-                    No content available.
-                </Typography>
-            )}
+        <Container maxWidth="sm" sx={{ marginTop: "5%", color: "#000" }}>
+            <Typography variant="h2" sx={{ marginBottom: "20px" }}>
+                {blog.blog_title || "Untitled Blog"}
+            </Typography>
+            <Typography variant="body1" sx={{ marginBottom: "20px" }}>
+                {blog.blog_content || "No content available."}
+            </Typography>
             {blog.image && (
                 <img
                     src={blog.image}

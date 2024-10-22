@@ -29,7 +29,7 @@ function App() {
             <Route path="/verify" element={<VerifyOTP />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/create-blog" element={<CreateBlog />} />
-            <Route path="/display" element={<BlogDisplay />} />
+            <Route path="/display/:id" element={<BlogDisplay />} />
           </Routes>
         </BrowserRouter>
       <Footer />

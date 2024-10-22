@@ -61,7 +61,7 @@ function Login() {
         justifyContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        height: "68vh",
+        height: "59vh",
         width: "100vw",
         marginTop: "5%",
         color: "#f0f0f0",  // light text color

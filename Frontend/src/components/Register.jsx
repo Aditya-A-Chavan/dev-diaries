@@ -91,8 +91,8 @@ function Register() {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                // height: "100vh",
-                width: "100vw",
+                // height: "120vh",
+                width: "99vw",
                 marginTop: "5%",
                 color: "#f0f0f0",  // light text color
             }}
