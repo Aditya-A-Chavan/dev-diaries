@@ -12,7 +12,7 @@ function BlogDisplay() {
     useEffect(() => {
         const fetchBlog = async () => {
             try {
-                const response = await axios.get(`http://localhost/dev-diaries/Backend/routes/fetch_blog.php?id=16`);
+                const response = await axios.get(`http://localhost/dev-diaries/Backend/routes/fetch_blog.php?id=1`);
                 if (response.data.status === 'success') {
                     setBlog(response.data.data);
                 } else {
