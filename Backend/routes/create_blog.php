@@ -7,37 +7,30 @@ require_once '../config/dbconfig.php';
 
 session_start();
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Access form fields directly from $_POST
+    $blogtitle = filter_var($_POST['blogtitle']);
+    $blogcontent = filter_var($_POST['blogcontent']);
 
-    if ($data == null) {
-        echo("No JSON data was recieved.");
-        // $blogcontent = "content";
-        // $blogtitle = "title";
-    } else {
-        $blogtitle = filter_var($data['blogtitle'], FILTER_SANITIZE_STRING);
-        $blogcontent = filter_var($data['blogcontent'], FILTER_SANITIZE_STRING);
-    }
-
-    // $blogtitle = filter_var($data['blogtitle']);
-    // $blogcontent = isset($data['blogcontent']) ? $data['blogcontent'] : '';
-    // $blogcontent = filter_var($data['blogcontent']);
     $image = null;
 
-    if(isset($_SESSION['username'])){
+    // Check if the user is logged in
+    if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
     } else {
         $username = "example_user";
         echo("No username in session.");
     }
 
-    if(isset($_FILES['blogimage']) && $_FILES['blogimage']['tmp_name']){
-        
-        $image = base64_encode(file_get_contents($_FILES['blogimage']['tmp_name']));
+    // Handle the file upload
+    if (isset($_FILES['blogimage']) && $_FILES['blogimage']['tmp_name']) {
+        $image = (file_get_contents($_FILES['blogimage']['tmp_name']));
     }
-    
+
+    // Call a function to save the blog (assuming saveRequest is a function)
     saveRequest($blogcontent, $blogtitle, $image, $username);
 }
+
 
 
 function saveRequest($blogcontent, $blogtitle, $image, $username){

@@ -34,7 +34,7 @@ function CreateBlog() {
 
     try {
       const response = await axios.post(
-        "http://localhost/dev-diaries/Backend/routes/create_blogs.php",
+        "http://localhost/dev-diaries/Backend/routes/create_blog.php",
         formData,
         {
           headers: {
