@@ -8,31 +8,37 @@ require_once '../config/dbconfig.php';
 
 header('Content-Type: application/json');
 
-function fetchBlogs() {
+function fetchBlogById($id) {
     global $connection;
 
-    $query = "SELECT blog_title, blog_content, created_at FROM blogs ORDER BY created_at DESC";
-    $result = $connection->query($query);
+    $query = "SELECT blog_title, blog_content, image, created_at FROM blogs WHERE blog_id = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result) {
-        $blogs = array();
-        while ($row = $result->fetch_assoc()) {
-            $row['blog_content'] = substr($row['blog_content'], 0, 100) . '...';
-            
-            $blogs[] = $row;
-        }
-        return $blogs;
+        return $result->fetch_assoc();
     } else {
         return null;
     }
 }
 
-$blogs = fetchBlogs();
+if (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $blog = fetchBlogById($id);
 
-if ($blogs !== null) {
-    echo json_encode(['status' => 'success', 'data' => $blogs]);
+    if ($blog !== null) {
+        // Convert image to base64 if it exists
+        if (!empty($blog['image'])) {
+            $blog['image'] = 'data:image/jpeg;base64,' . base64_encode($blog['image']);
+        }
+        echo json_encode(['status' => 'success', 'data' => $blog]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Blog not found']);
+    }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Failed to fetch blogs']);
+    echo json_encode(['status' => 'error', 'message' => 'No ID provided']);
 }
 
 $connection->close();
