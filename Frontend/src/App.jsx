@@ -12,11 +12,13 @@ import ResetPassword from './components/Reset';
 import CreateBlog from './components/CreateBlog';
 import BlogDisplay from './components/DisplayBlog';
 import BlogDashboard from './components/BlogDashboard';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
     <div>
         <BrowserRouter>
+        <Navbar />
           <Routes>
             <Route index element={<Login />} />
             <Route path="/login" element={<Login />} />
