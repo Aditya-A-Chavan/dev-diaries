@@ -14,11 +14,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         echo("No JSON data was recieved.");
         $blogcontent = "content";
         $blogtitle = "title";
+    } else {
+        $blogtitle = filter_var($data['blogtitle'], FILTER_SANITIZE_STRING);
+        $blogcontent = filter_var($data['blogcontent'], FILTER_SANITIZE_STRING);
     }
 
-    $blogtitle = filter_var($data['blogtitle']);
+    // $blogtitle = filter_var($data['blogtitle']);
     // $blogcontent = isset($data['blogcontent']) ? $data['blogcontent'] : '';
-    $blogcontent = filter_var($data['blogcontent']);
+    // $blogcontent = filter_var($data['blogcontent']);
     $image = null;
 
     if(isset($_SESSION['username'])){
@@ -30,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if(isset($_FILES['blogimage']) && $_FILES['blogimage']['tmp_name']){
         
-        $image = file_get_contents($_FILES['blogimage']['tmp_name']);
+        $image = base64_encode(file_get_contents($_FILES['blogimage']['tmp_name']));
     }
     
     saveRequest($blogcontent, $blogtitle, $image, $username);
