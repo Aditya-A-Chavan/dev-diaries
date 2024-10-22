@@ -12,8 +12,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if ($data == null) {
         echo("No JSON data was recieved.");
-        $blogcontent = "content";
-        $blogtitle = "title";
+        // $blogcontent = "content";
+        // $blogtitle = "title";
     } else {
         $blogtitle = filter_var($data['blogtitle'], FILTER_SANITIZE_STRING);
         $blogcontent = filter_var($data['blogcontent'], FILTER_SANITIZE_STRING);

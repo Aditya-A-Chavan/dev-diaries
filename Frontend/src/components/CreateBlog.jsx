@@ -35,7 +35,12 @@ function CreateBlog() {
     try {
       const response = await axios.post(
         "http://localhost/dev-diaries/Backend/routes/create_blogs.php",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Important for file upload
+          },
+        }
       );
       setApiResponse(response.data.message || "Blog saved successfully!");
     } catch (error) {

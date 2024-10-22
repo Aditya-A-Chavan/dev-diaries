@@ -1,5 +1,3 @@
-<!-- forget password form -->
-
 <?php
 
 error_reporting(E_ALL);
@@ -23,24 +21,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 function send_otp($phonenumber){
     $url = "http://13.48.25.155:9186/authentication/send_otp";
 
-    $payload = [
-        'phonenumber' => $phonenumber
+    $payload = json_encode(['phonenumber' => $phonenumber]);
+
+    // Create a context for the POST request
+    $options = [
+        'http' => [
+            'header'  => "Content-Type: application/json\r\n",
+            'method'  => 'POST',
+            'content' => $payload,
+            'ignore_errors' => true,  // Ignore HTTP errors to capture response
+        ],
     ];
 
-    $ch = curl_init($url);
+    $context  = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
 
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($ch);  
-
-    echo $response;
-
-    curl_close($ch);
+    if ($response === FALSE) {
+        return "Error sending OTP.";
+    }
 
     return $response;
 }
