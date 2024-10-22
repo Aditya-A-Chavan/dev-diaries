@@ -10,6 +10,7 @@ import ForgetPassword from './components/Forget';
 import VerifyOTP from './components/Verify';
 import ResetPassword from './components/Reset';
 import CreateBlog from './components/CreateBlog';
+import BlogDisplay from './components/DisplayBlog';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/verify" element={<VerifyOTP />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/create-blog" element={<CreateBlog />} />
+            <Route path="/display" element={<BlogDisplay />} />
           </Routes>
         </BrowserRouter>
       <Footer />
